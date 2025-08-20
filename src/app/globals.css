@@ -51,7 +51,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.45 0.15 220);
+  --primary: oklch(0.65 0.15 35);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -85,8 +85,8 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
+  --primary: oklch(0.7 0.15 35);
+  --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -104,7 +104,7 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary: oklch(0.7 0.15 35);
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
@@ -114,19 +114,42 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+    outline: none !important;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Remove focus ring effects */
+  input:focus,
+  textarea:focus,
+  select:focus,
+  button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Consistent input and button heights */
+  .input-height {
+    @apply h-12;
+  }
+  
+  .button-height {
+    @apply h-12;
   }
 }
 
 /* Custom bike platform styles */
 .hero-gradient {
   background: linear-gradient(135deg, 
-    oklch(0.45 0.15 220) 0%, 
-    oklch(0.35 0.12 240) 50%, 
-    oklch(0.25 0.08 260) 100%);
+    #FE8615 0%, 
+    #E6751A 50%, 
+    #CC661F 100%);
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, #FE8615 0%, #FF9A3C 100%);
 }
 
 .bike-card {
@@ -138,11 +161,50 @@
 }
 
 .trust-badge {
-  @apply bg-gradient-to-r from-green-500 to-emerald-600 text-white px-3 py-1 rounded-full text-sm font-medium;
+  @apply bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1 rounded-full text-sm font-medium;
 }
 
 .energy-accent {
-  @apply bg-gradient-to-r from-orange-500 to-red-500 text-white;
+  background: #FE8615;
+  @apply text-white;
+}
+
+.brand-orange {
+  color: #FE8615;
+}
+
+.bg-brand-orange {
+  background-color: #FE8615;
+}
+
+.border-brand-orange {
+  border-color: #FE8615;
+}
+
+.hover-brand-orange:hover {
+  background-color: #E6751A;
+}
+
+/* Infinite scroll animation */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-scroll:hover {
+  animation-play-state: paused;
+}
+
+.pause {
+  animation-play-state: paused;
 }
 
 .professional-text {

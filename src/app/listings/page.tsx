@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Navigation } from '@/components/navigation'
+import { Footer } from '@/components/footer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -218,7 +219,7 @@ export default function ListingsPage() {
 
   const getConditionColor = (condition: string) => {
     switch (condition) {
-      case 'excellent': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+      case 'excellent': return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300'
       case 'good': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'
       case 'fair': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
       default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300'
@@ -370,7 +371,7 @@ export default function ListingsPage() {
         {/* Bike Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredBikes.map((bike) => (
-            <Card key={bike._id} className="bike-card overflow-hidden">
+            <Card key={bike._id} className="bike-card overflow-hidden flex flex-col h-full">
               <div className="relative">
                 <Image
                   src={bike.images[0]}
@@ -380,12 +381,12 @@ export default function ListingsPage() {
                   className="w-full h-48 object-cover"
                 />
                 {bike.isFeatured && (
-                  <Badge className="absolute top-2 left-2 bg-yellow-500 text-yellow-900">
+                  <Badge className="absolute top-2 left-2 bg-orange-500 text-white">
                     Featured
                   </Badge>
                 )}
                 {bike.isVerified && (
-                  <Badge className="absolute top-2 right-2 bg-green-500 text-white">
+                  <Badge className="absolute top-2 right-2 bg-brand-orange text-white">
                     Verified
                   </Badge>
                 )}
@@ -403,12 +404,12 @@ export default function ListingsPage() {
                     {bike.condition.charAt(0).toUpperCase() + bike.condition.slice(1)}
                   </Badge>
                 </div>
-                <div className="text-2xl font-bold text-primary">
+                <div className="text-2xl font-bold brand-orange">
                   {formatPrice(bike.price)}
                 </div>
               </CardHeader>
               
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 flex-1 flex flex-col">
                 <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <Calendar className="h-4 w-4" />
@@ -428,12 +429,12 @@ export default function ListingsPage() {
                   </div>
                 </div>
                 
-                <p className="text-sm text-muted-foreground line-clamp-2">
+                <p className="text-sm text-muted-foreground line-clamp-2 flex-1">
                   {bike.description}
                 </p>
                 
-                <div className="flex gap-2">
-                  <Button asChild className="flex-1">
+                <div className="mt-auto">
+                  <Button asChild className="w-full bg-brand-orange hover-brand-orange">
                     <Link href={`/listings/${bike._id}`}>
                       <Eye className="h-4 w-4 mr-2" />
                       View Details
@@ -467,6 +468,8 @@ export default function ListingsPage() {
           </div>
         )}
       </main>
+
+      <Footer />
     </div>
   )
 }

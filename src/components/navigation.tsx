@@ -61,8 +61,8 @@ export function Navigation() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <Bike className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+            <img src="/logo.jpg" alt="BahonXBD" className="h-8 w-8 rounded-full object-cover" />
+            <span className="text-xl font-bold brand-orange">
               BahonXBD
             </span>
           </Link>
@@ -84,46 +84,24 @@ export function Navigation() {
           <div className="flex items-center space-x-2">
             {/* Desktop Auth Links */}
             <div className="hidden md:flex items-center space-x-2">
-              {!isLoading && (
-                user ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="flex items-center space-x-2">
-                        <User className="h-4 w-4" />
-                        <span>{user.name}</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem asChild>
-                        <Link href="/profile">Profile</Link>
-                      </DropdownMenuItem>
-                      {user.role === 'admin' && (
-                        <DropdownMenuItem asChild>
-                          <Link href="/admin">Admin Dashboard</Link>
-                        </DropdownMenuItem>
-                      )}
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={handleLogout}>
-                        Logout
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <>
-                    <Button variant="ghost" asChild>
-                      <Link href="/login" className="flex items-center space-x-1">
-                        <LogIn className="h-4 w-4" />
-                        <span>Login</span>
-                      </Link>
+              {!isLoading && user && user.role === 'admin' && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="flex items-center space-x-2">
+                      <User className="h-4 w-4" />
+                      <span>Admin</span>
                     </Button>
-                    <Button asChild>
-                      <Link href="/register" className="flex items-center space-x-1">
-                        <UserPlus className="h-4 w-4" />
-                        <span>Register</span>
-                      </Link>
-                    </Button>
-                  </>
-                )
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link href="/admin">Admin Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               )}
             </div>
             
@@ -150,60 +128,30 @@ export function Navigation() {
                     </Link>
                   ))}
                   
-                  {/* Mobile Auth Links */}
-                  <div className="border-t pt-4 mt-6">
-                    {!isLoading && (
-                      user ? (
-                        <div className="space-y-2">
-                          <Link
-                            href="/profile"
-                            className="flex items-center space-x-2 text-lg font-medium transition-colors hover:text-primary"
-                            onClick={() => setIsOpen(false)}
-                          >
-                            <User className="h-4 w-4" />
-                            <span>Profile ({user.name})</span>
-                          </Link>
-                          {user.role === 'admin' && (
-                            <Link
-                              href="/admin"
-                              className="flex items-center space-x-2 text-lg font-medium transition-colors hover:text-primary"
-                              onClick={() => setIsOpen(false)}
-                            >
-                              <span>Admin Dashboard</span>
-                            </Link>
-                          )}
-                          <button
-                            onClick={() => {
-                              handleLogout()
-                              setIsOpen(false)
-                            }}
-                            className="flex items-center space-x-2 text-lg font-medium transition-colors hover:text-primary w-full text-left"
-                          >
-                            <span>Logout</span>
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          <Link
-                            href="/login"
-                            className="flex items-center space-x-2 text-lg font-medium transition-colors hover:text-primary"
-                            onClick={() => setIsOpen(false)}
-                          >
-                            <LogIn className="h-4 w-4" />
-                            <span>Login</span>
-                          </Link>
-                          <Link
-                            href="/register"
-                            className="flex items-center space-x-2 text-lg font-medium transition-colors hover:text-primary"
-                            onClick={() => setIsOpen(false)}
-                          >
-                            <UserPlus className="h-4 w-4" />
-                            <span>Register</span>
-                          </Link>
-                        </div>
-                      )
-                    )}
-                  </div>
+                  {/* Mobile Admin Links */}
+                  {!isLoading && user && user.role === 'admin' && (
+                    <div className="border-t pt-4 mt-6">
+                      <div className="space-y-2">
+                        <Link
+                          href="/admin"
+                          className="flex items-center space-x-2 text-lg font-medium transition-colors hover:text-primary"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <User className="h-4 w-4" />
+                          <span>Admin Dashboard</span>
+                        </Link>
+                        <button
+                          onClick={() => {
+                            handleLogout()
+                            setIsOpen(false)
+                          }}
+                          className="flex items-center space-x-2 text-lg font-medium transition-colors hover:text-primary w-full text-left"
+                        >
+                          <span>Logout</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>

@@ -1,138 +1,76 @@
-import { ObjectId } from 'mongodb'
-
-// Bike interface
 export interface Bike {
-  _id?: ObjectId
+  _id: string
+  title: string
   brand: string
   model: string
   year: number
   price: number
-  engineSize: number // in CC
-  color: string
-  condition: 'excellent' | 'good' | 'fair' | 'needs-repair'
   mileage: number
+  condition: 'excellent' | 'good' | 'fair'
+  engineCapacity: number
+  fuelType: 'petrol' | 'diesel' | 'electric'
+  transmission: 'manual' | 'automatic'
+  color: string
+  location: string
   description: string
-  images: string[] // URLs to images
+  images: string[]
   features: string[]
-  repairCosts: RepairCost[]
-  totalRepairCost: number
-  status: 'available' | 'sold' | 'reserved'
+  isVerified: boolean
+  isFeatured: boolean
+  status: 'available' | 'sold' | 'pending'
   createdAt: Date
   updatedAt: Date
-  soldAt?: Date
-  soldPrice?: number
 }
 
-// Repair cost tracking
-export interface RepairCost {
-  _id?: ObjectId
-  bikeId: ObjectId
-  description: string
-  cost: number
-  date: Date
-  category: 'engine' | 'body' | 'electrical' | 'tires' | 'brakes' | 'other'
-  parts: string[]
-}
-
-// Order interface
 export interface Order {
-  _id?: ObjectId
-  bikeId: ObjectId
-  customerName: string
-  customerEmail: string
-  customerPhone: string
-  customerNID?: string
-  salePrice: number
-  documents: string[] // URLs to documents
-  status: 'pending' | 'verified' | 'completed' | 'cancelled'
-  verificationToken?: string
-  verificationTokenExpiry?: Date
-  isVerified: boolean
+  _id: string
+  bikeId: string
+  buyerName: string
+  buyerEmail: string
+  buyerPhone: string
+  status: 'pending' | 'completed' | 'cancelled'
+  totalAmount: number
   createdAt: Date
   updatedAt: Date
-  completedAt?: Date
 }
 
-// Bike wash service
-export interface BikeWashService {
-  _id?: ObjectId
-  name: string
-  description: string
-  price: number
-  duration: number // in minutes
-  features: string[]
-  isActive: boolean
-}
-
-// Bike wash location
-export interface BikeWashLocation {
-  _id?: ObjectId
-  name: string
-  address: string
-  city: string
-  phone: string
-  coordinates: {
-    lat: number
-    lng: number
-  }
-  services: ObjectId[] // References to BikeWashService
-  workingHours: {
-    [key: string]: {
-      open: string
-      close: string
-      isOpen: boolean
-    }
-  }
-  isActive: boolean
-}
-
-// Admin user
-export interface AdminUser {
-  _id?: ObjectId
-  username: string
-  email: string
-  passwordHash: string
-  role: 'admin' | 'super-admin'
-  createdAt: Date
-  lastLogin?: Date
-}
-
-// Platform statistics
 export interface PlatformStats {
-  _id?: ObjectId
-  totalBikesSold: number
-  totalEarnings: number
-  totalCustomers: number
-  yearsInBusiness: number
-  averageRating: number
-  totalReviews: number
+  totalBikes: number
+  activeBikes: number
+  soldBikes: number
+  totalRevenue: number
+  monthlyRevenue: number
+  totalOrders: number
+  pendingOrders: number
+  completedOrders: number
+  totalUsers: number
+  activeUsers: number
+  averagePrice: number
+  topSellingBrand: string
+}
+
+export interface User {
+  _id: string
+  name: string
+  email: string
+  phone?: string
+  role: 'user' | 'admin'
+  isVerified: boolean
+  createdAt: Date
   updatedAt: Date
 }
 
-// Customer review
-export interface CustomerReview {
-  _id?: ObjectId
+export interface BikeWashBooking {
+  _id: string
   customerName: string
-  rating: number // 1-5
-  review: string
-  bikeId?: ObjectId
-  orderId?: ObjectId
-  isVerified: boolean
-  isPublished: boolean
+  customerPhone: string
+  bikeModel: string
+  serviceType: string
+  preferredDate: Date
+  preferredTime: string
+  specialInstructions?: string
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
+  totalAmount: number
   createdAt: Date
-}
-
-// Search filters
-export interface BikeFilters {
-  brand?: string
-  minPrice?: number
-  maxPrice?: number
-  minEngineSize?: number
-  maxEngineSize?: number
-  color?: string
-  condition?: string
-  minYear?: number
-  maxYear?: number
-  status?: string
-  search?: string
+  updatedAt: Date
 }

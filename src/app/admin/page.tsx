@@ -12,13 +12,13 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  DollarSign, 
-  TrendingUp, 
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  DollarSign,
+  TrendingUp,
   TrendingDown,
   Calendar,
   Users,
@@ -138,6 +138,23 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState<Order[]>(mockOrders)
   const [isAddBikeOpen, setIsAddBikeOpen] = useState(false)
   const [selectedBike, setSelectedBike] = useState<BikeType | null>(null)
+
+  // Bike Wash Financial Management State
+  const [bikeWashStats, setBikeWashStats] = useState({
+    dailyEarnings: 0,
+    washesCompleted: 0,
+    totalMonthlyEarnings: 45000,
+    totalMonthlyWashes: 180,
+    averagePerWash: 250
+  })
+  const [newEarnings, setNewEarnings] = useState({ earnings: '', washes: '' })
+  const [washHistory, setWashHistory] = useState([
+    { date: '2024-01-25', earnings: 1200, washes: 5 },
+    { date: '2024-01-24', earnings: 800, washes: 3 },
+    { date: '2024-01-23', earnings: 1500, washes: 6 },
+    { date: '2024-01-22', earnings: 900, washes: 4 },
+    { date: '2024-01-21', earnings: 1100, washes: 4 }
+  ])
   const [newBike, setNewBike] = useState<Partial<BikeType>>({
     title: '',
     brand: '',
@@ -184,7 +201,7 @@ export default function AdminDashboard() {
       createdAt: new Date(),
       updatedAt: new Date()
     } as BikeType
-    
+
     setBikes([...bikes, bike])
     setIsAddBikeOpen(false)
     setNewBike({
@@ -213,27 +230,54 @@ export default function AdminDashboard() {
   }
 
   const handleVerifyBike = (bikeId: string) => {
-    setBikes(bikes.map(bike => 
+    setBikes(bikes.map(bike =>
       bike._id === bikeId ? { ...bike, isVerified: !bike.isVerified } : bike
     ))
   }
 
   const handleFeatureBike = (bikeId: string) => {
-    setBikes(bikes.map(bike => 
+    setBikes(bikes.map(bike =>
       bike._id === bikeId ? { ...bike, isFeatured: !bike.isFeatured } : bike
     ))
   }
 
   const handleUpdateOrderStatus = (orderId: string, status: string) => {
-    setOrders(orders.map(order => 
+    setOrders(orders.map(order =>
       order._id === orderId ? { ...order, status, updatedAt: new Date() } : order
     ))
+  }
+
+  const handleAddDailyWashData = () => {
+    if (!newEarnings.earnings || !newEarnings.washes) return
+
+    const earnings = parseInt(newEarnings.earnings)
+    const washes = parseInt(newEarnings.washes)
+    const today = new Date().toISOString().split('T')[0]
+
+    // Update daily stats
+    setBikeWashStats(prev => ({
+      ...prev,
+      dailyEarnings: earnings,
+      washesCompleted: washes,
+      totalMonthlyEarnings: prev.totalMonthlyEarnings + earnings,
+      totalMonthlyWashes: prev.totalMonthlyWashes + washes,
+      averagePerWash: Math.round((prev.totalMonthlyEarnings + earnings) / (prev.totalMonthlyWashes + washes))
+    }))
+
+    // Add to history
+    setWashHistory(prev => [
+      { date: today, earnings, washes },
+      ...prev.slice(0, 9) // Keep only last 10 entries
+    ])
+
+    // Reset form
+    setNewEarnings({ earnings: '', washes: '' })
   }
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
+
       <main className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -244,10 +288,11 @@ export default function AdminDashboard() {
         </div>
 
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-6">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="bikes">Bikes</TabsTrigger>
             <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="bike-wash">Bike Wash</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
@@ -271,7 +316,7 @@ export default function AdminDashboard() {
                   </p>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Bikes</CardTitle>
@@ -284,7 +329,7 @@ export default function AdminDashboard() {
                   </p>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
@@ -297,7 +342,7 @@ export default function AdminDashboard() {
                   </p>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Active Users</CardTitle>
@@ -337,7 +382,7 @@ export default function AdminDashboard() {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Monthly Revenue</CardTitle>
@@ -377,13 +422,13 @@ export default function AdminDashboard() {
                       <Input
                         id="title"
                         value={newBike.title}
-                        onChange={(e) => setNewBike({...newBike, title: e.target.value})}
+                        onChange={(e) => setNewBike({ ...newBike, title: e.target.value })}
                         placeholder="Bike title"
                       />
                     </div>
                     <div>
                       <Label htmlFor="brand">Brand</Label>
-                      <Select value={newBike.brand} onValueChange={(value) => setNewBike({...newBike, brand: value})}>
+                      <Select value={newBike.brand} onValueChange={(value) => setNewBike({ ...newBike, brand: value })}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select brand" />
                         </SelectTrigger>
@@ -402,7 +447,7 @@ export default function AdminDashboard() {
                       <Input
                         id="model"
                         value={newBike.model}
-                        onChange={(e) => setNewBike({...newBike, model: e.target.value})}
+                        onChange={(e) => setNewBike({ ...newBike, model: e.target.value })}
                         placeholder="Bike model"
                       />
                     </div>
@@ -412,7 +457,7 @@ export default function AdminDashboard() {
                         id="year"
                         type="number"
                         value={newBike.year}
-                        onChange={(e) => setNewBike({...newBike, year: parseInt(e.target.value)})}
+                        onChange={(e) => setNewBike({ ...newBike, year: parseInt(e.target.value) })}
                         placeholder="Manufacturing year"
                       />
                     </div>
@@ -422,7 +467,7 @@ export default function AdminDashboard() {
                         id="price"
                         type="number"
                         value={newBike.price}
-                        onChange={(e) => setNewBike({...newBike, price: parseInt(e.target.value)})}
+                        onChange={(e) => setNewBike({ ...newBike, price: parseInt(e.target.value) })}
                         placeholder="Price in BDT"
                       />
                     </div>
@@ -432,13 +477,13 @@ export default function AdminDashboard() {
                         id="mileage"
                         type="number"
                         value={newBike.mileage}
-                        onChange={(e) => setNewBike({...newBike, mileage: parseInt(e.target.value)})}
+                        onChange={(e) => setNewBike({ ...newBike, mileage: parseInt(e.target.value) })}
                         placeholder="Mileage in kilometers"
                       />
                     </div>
                     <div>
                       <Label htmlFor="condition">Condition</Label>
-                      <Select value={newBike.condition} onValueChange={(value) => setNewBike({...newBike, condition: value as any})}>
+                      <Select value={newBike.condition} onValueChange={(value) => setNewBike({ ...newBike, condition: value as any })}>
                         <SelectTrigger>
                           <SelectValue placeholder="Select condition" />
                         </SelectTrigger>
@@ -455,7 +500,7 @@ export default function AdminDashboard() {
                         id="engineCapacity"
                         type="number"
                         value={newBike.engineCapacity}
-                        onChange={(e) => setNewBike({...newBike, engineCapacity: parseInt(e.target.value)})}
+                        onChange={(e) => setNewBike({ ...newBike, engineCapacity: parseInt(e.target.value) })}
                         placeholder="Engine capacity"
                       />
                     </div>
@@ -464,7 +509,7 @@ export default function AdminDashboard() {
                       <Input
                         id="color"
                         value={newBike.color}
-                        onChange={(e) => setNewBike({...newBike, color: e.target.value})}
+                        onChange={(e) => setNewBike({ ...newBike, color: e.target.value })}
                         placeholder="Bike color"
                       />
                     </div>
@@ -473,7 +518,7 @@ export default function AdminDashboard() {
                       <Input
                         id="location"
                         value={newBike.location}
-                        onChange={(e) => setNewBike({...newBike, location: e.target.value})}
+                        onChange={(e) => setNewBike({ ...newBike, location: e.target.value })}
                         placeholder="Location"
                       />
                     </div>
@@ -482,7 +527,7 @@ export default function AdminDashboard() {
                       <Textarea
                         id="description"
                         value={newBike.description}
-                        onChange={(e) => setNewBike({...newBike, description: e.target.value})}
+                        onChange={(e) => setNewBike({ ...newBike, description: e.target.value })}
                         placeholder="Bike description"
                         rows={3}
                       />
@@ -564,22 +609,22 @@ export default function AdminDashboard() {
                               <Button size="sm" variant="outline">
                                 <Edit className="h-4 w-4" />
                               </Button>
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 variant="outline"
                                 onClick={() => handleVerifyBike(bike._id)}
                               >
                                 <CheckCircle className="h-4 w-4" />
                               </Button>
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 variant="outline"
                                 onClick={() => handleFeatureBike(bike._id)}
                               >
                                 ⭐
                               </Button>
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 variant="destructive"
                                 onClick={() => handleDeleteBike(bike._id)}
                               >
@@ -599,7 +644,7 @@ export default function AdminDashboard() {
           {/* Orders Tab */}
           <TabsContent value="orders" className="space-y-6">
             <h2 className="text-2xl font-bold">Order Management</h2>
-            
+
             <Card>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
@@ -635,8 +680,8 @@ export default function AdminDashboard() {
                           </td>
                           <td className="p-4">
                             <div className="flex items-center gap-2">
-                              <Select 
-                                value={order.status} 
+                              <Select
+                                value={order.status}
                                 onValueChange={(value) => handleUpdateOrderStatus(order._id, value)}
                               >
                                 <SelectTrigger className="w-32">
@@ -662,10 +707,160 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
+          {/* Bike Wash Financial Management Tab */}
+          <TabsContent value="bike-wash" className="space-y-6">
+            <h2 className="text-2xl font-bold">Bike Wash Financial Management</h2>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Today's Earnings</CardTitle>
+                  <DollarSign className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{formatPrice(bikeWashStats.dailyEarnings)}</div>
+                  <p className="text-xs text-muted-foreground">
+                    {bikeWashStats.washesCompleted} washes completed
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Monthly Earnings</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{formatPrice(bikeWashStats.totalMonthlyEarnings)}</div>
+                  <p className="text-xs text-muted-foreground">
+                    {bikeWashStats.totalMonthlyWashes} total washes
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Average per Wash</CardTitle>
+                  <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{formatPrice(bikeWashStats.averagePerWash)}</div>
+                  <p className="text-xs text-muted-foreground">
+                    Based on monthly data
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Daily Target</CardTitle>
+                  <Activity className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{formatPrice(1500)}</div>
+                  <p className="text-xs text-muted-foreground">
+                    <span className={bikeWashStats.dailyEarnings >= 1500 ? "text-green-600" : "text-orange-600"}>
+                      {bikeWashStats.dailyEarnings >= 1500 ? "Target achieved!" : `${formatPrice(1500 - bikeWashStats.dailyEarnings)} remaining`}
+                    </span>
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Add Daily Data Form */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Update Today's Data</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                  <div>
+                    <Label htmlFor="earnings">Daily Earnings (BDT)</Label>
+                    <Input
+                      id="earnings"
+                      type="number"
+                      placeholder="Enter today's earnings"
+                      value={newEarnings.earnings}
+                      onChange={(e) => setNewEarnings(prev => ({ ...prev, earnings: e.target.value }))}
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="washes">Number of Washes</Label>
+                    <Input
+                      id="washes"
+                      type="number"
+                      placeholder="Enter number of washes"
+                      value={newEarnings.washes}
+                      onChange={(e) => setNewEarnings(prev => ({ ...prev, washes: e.target.value }))}
+                    />
+                  </div>
+                  <Button onClick={handleAddDailyWashData} className="w-full">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Update Data
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recent History */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Daily Performance</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {washHistory.map((day, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <div className="font-medium">{new Date(day.date).toLocaleDateString()}</div>
+                          <div className="text-sm text-muted-foreground">{day.washes} washes</div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-semibold">{formatPrice(day.earnings)}</div>
+                          <div className="text-sm text-muted-foreground">
+                            Avg: {formatPrice(Math.round(day.earnings / day.washes))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Monthly Summary</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
+                      <span>Total Earnings</span>
+                      <span className="font-bold text-lg">{formatPrice(bikeWashStats.totalMonthlyEarnings)}</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
+                      <span>Total Washes</span>
+                      <span className="font-bold text-lg">{bikeWashStats.totalMonthlyWashes}</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
+                      <span>Average per Wash</span>
+                      <span className="font-bold text-lg">{formatPrice(bikeWashStats.averagePerWash)}</span>
+                    </div>
+                    <div className="flex justify-between items-center p-3 bg-muted/50 rounded-lg">
+                      <span>Days Active</span>
+                      <span className="font-bold text-lg">{washHistory.length}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-6">
             <h2 className="text-2xl font-bold">Analytics & Reports</h2>
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
@@ -681,8 +876,8 @@ export default function AdminDashboard() {
                         <span>{data.month}</span>
                         <div className="flex items-center gap-2">
                           <div className="w-32 bg-muted rounded-full h-2">
-                            <div 
-                              className="bg-primary h-2 rounded-full" 
+                            <div
+                              className="bg-primary h-2 rounded-full"
                               style={{ width: `${(data.revenue / 2500000) * 100}%` }}
                             ></div>
                           </div>
@@ -693,7 +888,7 @@ export default function AdminDashboard() {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -728,7 +923,7 @@ export default function AdminDashboard() {
           {/* Settings Tab */}
           <TabsContent value="settings" className="space-y-6">
             <h2 className="text-2xl font-bold">Platform Settings</h2>
-            
+
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
@@ -750,7 +945,7 @@ export default function AdminDashboard() {
                   <Button>Save Settings</Button>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader>
                   <CardTitle>Email Configuration</CardTitle>

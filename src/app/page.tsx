@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Navigation } from "@/components/navigation"
+import { Footer } from "@/components/footer"
 
 // Mock data - in real app this would come from database
 const platformStats = {
@@ -88,39 +89,39 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Your Trusted <span className="text-yellow-400">Bike Platform</span>
+              Your Trusted <span className="text-white">Bike Platform</span>
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100">
+            <p className="text-xl md:text-2xl mb-8 text-orange-100">
               Quality motorcycles, transparent deals, and professional service you can trust
             </p>
             
             {/* Trust Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-yellow-400">{platformStats.totalBikesSold}+</div>
-                <div className="text-sm md:text-base text-blue-100">Bikes Sold</div>
+                <div className="text-3xl md:text-4xl font-bold text-white">{platformStats.totalBikesSold}+</div>
+                <div className="text-sm md:text-base text-orange-100">Bikes Sold</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-yellow-400">{platformStats.happyClients}+</div>
-                <div className="text-sm md:text-base text-blue-100">Happy Clients</div>
+                <div className="text-3xl md:text-4xl font-bold text-white">{platformStats.happyClients}+</div>
+                <div className="text-sm md:text-base text-orange-100">Happy Clients</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-yellow-400">{platformStats.yearsInBusiness}</div>
-                <div className="text-sm md:text-base text-blue-100">Years Experience</div>
+                <div className="text-3xl md:text-4xl font-bold text-white">{platformStats.yearsInBusiness}</div>
+                <div className="text-sm md:text-base text-orange-100">Years Experience</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-yellow-400">{platformStats.averageRating}/5</div>
-                <div className="text-sm md:text-base text-blue-100">Average Rating</div>
+                <div className="text-3xl md:text-4xl font-bold text-white">{platformStats.averageRating}/5</div>
+                <div className="text-sm md:text-base text-orange-100">Average Rating</div>
               </div>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
+              <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50 font-semibold">
                 <Link href="/listings" className="flex items-center gap-2">
                   Browse Bikes <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-orange-600 font-semibold">
                 <Link href="/about">Learn More</Link>
               </Button>
             </div>
@@ -140,7 +141,7 @@ export default function Home() {
                   className="h-12 text-lg"
                 />
               </div>
-              <Button size="lg" className="md:w-auto">
+              <Button size="lg" className="md:w-auto bg-brand-orange hover-brand-orange">
                 <Search className="h-4 w-4 mr-2" />
                 Search
               </Button>
@@ -165,30 +166,30 @@ export default function Home() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredBikes.map((bike) => (
-              <Card key={bike.id} className="bike-card">
+              <Card key={bike.id} className="bike-card flex flex-col h-full">
                 <CardHeader className="p-0">
                   <div className="aspect-video bg-muted rounded-t-lg flex items-center justify-center">
                     <div className="text-muted-foreground">Bike Image</div>
                   </div>
                 </CardHeader>
-                <CardContent className="p-4">
+                <CardContent className="p-4 flex-1 flex flex-col">
                   <div className="flex justify-between items-start mb-2">
                     <CardTitle className="text-lg">{bike.brand} {bike.model}</CardTitle>
-                    <Badge className="trust-badge">{bike.condition}</Badge>
+                    <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300">{bike.condition}</Badge>
                   </div>
                   <CardDescription className="mb-3">
                     {bike.year} • {bike.engineSize}CC • {bike.color}
                   </CardDescription>
-                  <div className="text-2xl font-bold text-primary mb-3">
+                  <div className="text-2xl font-bold brand-orange mb-3">
                     ৳{bike.price.toLocaleString()}
                   </div>
-                </CardContent>
-                <CardFooter className="p-4 pt-0">
-                  <div className="flex gap-2 w-full">
-                    <Button className="flex-1">View Details</Button>
-                    <Button variant="outline" className="flex-1">Contact</Button>
+                  <div className="mt-auto">
+                    <div className="flex gap-2 w-full">
+                      <Button className="flex-1 bg-brand-orange hover-brand-orange">View Details</Button>
+                      <Button variant="outline" className="flex-1 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white">Contact</Button>
+                    </div>
                   </div>
-                </CardFooter>
+                </CardContent>
               </Card>
             ))}
           </div>
@@ -198,22 +199,54 @@ export default function Home() {
       {/* Recently Sold */}
       <section className="py-16 bg-muted/50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Recently Sold Bikes</h2>
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {soldBikes.map((bike, index) => (
-                <Card key={index} className="text-center">
-                  <CardContent className="p-6">
-                    <CheckCircle className="h-8 w-8 text-green-500 mx-auto mb-3" />
-                    <h3 className="font-semibold">{bike.brand} {bike.model}</h3>
-                    <p className="text-muted-foreground">৳{bike.price.toLocaleString()}</p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Sold on {new Date(bike.soldDate).toLocaleDateString()}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold">Recently Sold Bikes</h2>
+            <Button variant="outline" className="border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white">
+              View All Sold <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {soldBikes.map((bike, index) => (
+              <Card key={index} className="bike-card flex flex-col h-full">
+                <CardHeader className="p-0">
+                  <div className="aspect-video bg-muted rounded-t-lg flex items-center justify-center relative">
+                    <div className="text-muted-foreground">Bike Image</div>
+                    <Badge className="absolute top-2 right-2 bg-brand-orange text-white">
+                      Sold
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 flex-1 flex flex-col">
+                  <div className="flex justify-between items-start mb-2">
+                    <CardTitle className="text-lg">{bike.brand} {bike.model}</CardTitle>
+                    <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300">
+                      <CheckCircle className="h-3 w-3 mr-1" />
+                      Sold
+                    </Badge>
+                  </div>
+                  <CardDescription className="mb-3">
+                    Sold on {new Date(bike.soldDate).toLocaleDateString()}
+                  </CardDescription>
+                  <div className="text-2xl font-bold brand-orange mb-3">
+                    ৳{bike.price.toLocaleString()}
+                  </div>
+                  <div className="mt-auto">
+                    <div className="flex gap-2 w-full">
+                      <Button className="flex-1 bg-brand-orange hover-brand-orange">View Similar</Button>
+                      <Button variant="outline" className="flex-1 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white">Get Alert</Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          
+          <div className="text-center mt-8">
+            <p className="text-muted-foreground mb-4">Join hundreds of satisfied customers who found their perfect bike</p>
+            <Button className="bg-brand-orange hover-brand-orange">
+              <Link href="/listings">Find Your Bike Today</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -222,26 +255,41 @@ export default function Home() {
       <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8">What Our Customers Say</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {customerReviews.map((review, index) => (
-              <Card key={index}>
-                <CardContent className="p-6">
-                  <div className="flex items-center mb-3">
-                    <div className="flex text-yellow-400">
-                      {[...Array(review.rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-current" />
-                      ))}
+          <div className="overflow-hidden">
+            <div className="flex animate-scroll hover:pause space-x-6">
+              {[...customerReviews, ...customerReviews].map((review, index) => (
+                <Card key={index} className="min-w-[350px] flex-shrink-0">
+                  <CardContent className="p-6">
+                    <div className="flex items-center mb-3">
+                      <div className="flex text-orange-400">
+                        {[...Array(review.rating)].map((_, i) => (
+                          <Star key={i} className="h-4 w-4 fill-current" />
+                        ))}
+                      </div>
+                      <span className="ml-2 text-sm text-muted-foreground">({review.rating}/5)</span>
                     </div>
-                    <span className="ml-2 text-sm text-muted-foreground">({review.rating}/5)</span>
-                  </div>
-                  <p className="text-muted-foreground mb-4">"{review.review}"</p>
-                  <div>
-                    <p className="font-semibold">{review.name}</p>
-                    <p className="text-sm text-muted-foreground">Purchased: {review.bike}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    <p className="text-muted-foreground mb-4 italic">"{review.review}"</p>
+                    <div className="border-t pt-4">
+                      <p className="font-semibold">{review.name}</p>
+                      <p className="text-sm brand-orange">Purchased: {review.bike}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+          <div className="text-center mt-8">
+            <p className="text-muted-foreground mb-4">Over 1,000+ happy customers and counting</p>
+            <div className="flex justify-center items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="flex text-orange-400">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-current" />
+                  ))}
+                </div>
+                <span className="font-semibold">4.8/5 Average Rating</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -253,17 +301,23 @@ export default function Home() {
             <h2 className="text-3xl font-bold mb-8">Why Choose BahonXBD?</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <Award className="h-12 w-12 text-primary mx-auto mb-4" />
+                <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Award className="h-8 w-8 brand-orange" />
+                </div>
                 <h3 className="text-xl font-semibold mb-2">Quality Assured</h3>
                 <p className="text-muted-foreground">Every bike is thoroughly inspected and verified before listing</p>
               </div>
               <div className="text-center">
-                <Users className="h-12 w-12 text-primary mx-auto mb-4" />
+                <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 brand-orange" />
+                </div>
                 <h3 className="text-xl font-semibold mb-2">Trusted by Thousands</h3>
                 <p className="text-muted-foreground">Over 1000+ satisfied customers and growing</p>
               </div>
               <div className="text-center">
-                <Clock className="h-12 w-12 text-primary mx-auto mb-4" />
+                <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="h-8 w-8 brand-orange" />
+                </div>
                 <h3 className="text-xl font-semibold mb-2">8 Years Experience</h3>
                 <p className="text-muted-foreground">Established reputation in the motorcycle industry</p>
               </div>
@@ -273,20 +327,45 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 hero-gradient text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Find Your Perfect Bike?</h2>
-          <p className="text-xl mb-8 text-blue-100">Browse our extensive collection or get in touch with our experts</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
-              <Link href="/listings">Browse All Bikes</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
-              <Link href="/bike-wash">Bike Wash Services</Link>
-            </Button>
+      <section className="py-20 hero-gradient text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white drop-shadow-lg">
+              Ready to Find Your Perfect Bike?
+            </h2>
+            <p className="text-xl md:text-2xl mb-10 text-orange-50 leading-relaxed">
+              Browse our extensive collection of quality motorcycles or get personalized assistance from our experts
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50 font-semibold px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <Link href="/listings" className="flex items-center gap-2">
+                  Browse All Bikes <ArrowRight className="h-5 w-5" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-orange-600 font-semibold px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <Link href="/bike-wash">Bike Wash Services</Link>
+              </Button>
+            </div>
+            <div className="mt-8 flex justify-center items-center gap-6 text-orange-100">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5" />
+                <span>Quality Assured</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5" />
+                <span>Expert Support</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-5 w-5" />
+                <span>Trusted Platform</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   )
 }

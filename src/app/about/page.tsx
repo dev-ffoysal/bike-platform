@@ -1,6 +1,7 @@
 'use client'
 
 import { Navigation } from '@/components/navigation'
+import { Footer } from '@/components/footer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -53,25 +54,25 @@ const achievements = [
     icon: Users,
     title: '10,000+',
     description: 'Happy Customers',
-    color: 'text-blue-600'
+    color: 'brand-orange'
   },
   {
     icon: Award,
     title: '5,000+',
     description: 'Bikes Sold',
-    color: 'text-green-600'
+    color: 'brand-orange'
   },
   {
     icon: Shield,
     title: '99.8%',
     description: 'Customer Satisfaction',
-    color: 'text-purple-600'
+    color: 'brand-orange'
   },
   {
     icon: Clock,
     title: '5+',
     description: 'Years of Excellence',
-    color: 'text-orange-600'
+    color: 'brand-orange'
   }
 ]
 
@@ -105,27 +106,27 @@ export default function AboutPage() {
       
       <main>
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-br from-primary/10 via-background to-secondary/10">
+        <section className="relative py-20 hero-gradient text-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+              <Badge className="mb-4 bg-white/20 text-white border-white/30">
                 About BahonXBD
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
                 Your Trusted Partner in
-                <span className="text-primary block">Bike Trading</span>
+                <span className="text-white block">Bike Trading</span>
               </h1>
-              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+              <p className="text-xl text-orange-100 mb-8 leading-relaxed">
                 We're revolutionizing the bike marketplace in Bangladesh by connecting buyers and sellers 
                 through a trusted, transparent, and efficient platform.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" asChild>
+                <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50 font-semibold button-height">
                   <Link href="/listings">
                     Browse Bikes
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-orange-600 font-semibold button-height">
                   <Link href="/bike-wash">
                     Our Services
                   </Link>
@@ -143,10 +144,10 @@ export default function AboutPage() {
                 const IconComponent = achievement.icon
                 return (
                   <div key={index} className="text-center">
-                    <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full bg-background shadow-lg mb-4`}>
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-orange-100 dark:bg-orange-900 shadow-lg mb-4">
                       <IconComponent className={`h-8 w-8 ${achievement.color}`} />
                     </div>
-                    <div className="text-3xl font-bold mb-2">{achievement.title}</div>
+                    <div className="text-3xl font-bold mb-2 brand-orange">{achievement.title}</div>
                     <div className="text-muted-foreground">{achievement.description}</div>
                   </div>
                 )
@@ -160,7 +161,7 @@ export default function AboutPage() {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+                <Badge className="mb-4 bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300 border-orange-200 dark:border-orange-800">
                   Our Story
                 </Badge>
                 <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -185,7 +186,7 @@ export default function AboutPage() {
                   </p>
                 </div>
                 <div className="mt-8">
-                  <Button asChild>
+                  <Button className="bg-brand-orange hover-brand-orange button-height" asChild>
                     <Link href="/listings">
                       Start Your Journey
                     </Link>
@@ -202,7 +203,7 @@ export default function AboutPage() {
                     className="rounded-lg shadow-2xl"
                   />
                 </div>
-                <div className="absolute -bottom-6 -right-6 w-full h-full bg-primary/10 rounded-lg -z-10"></div>
+                <div className="absolute -bottom-6 -right-6 w-full h-full bg-orange-100 dark:bg-orange-900/30 rounded-lg -z-10"></div>
               </div>
             </div>
           </div>
@@ -212,7 +213,7 @@ export default function AboutPage() {
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+              <Badge className="mb-4 bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300 border-orange-200 dark:border-orange-800">
                 Our Values
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -230,8 +231,8 @@ export default function AboutPage() {
                   <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
                     <div className="flex items-start gap-4">
                       <div className="flex-shrink-0">
-                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                          <IconComponent className="h-6 w-6 text-primary" />
+                        <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
+                          <IconComponent className="h-6 w-6 brand-orange" />
                         </div>
                       </div>
                       <div>
@@ -250,7 +251,7 @@ export default function AboutPage() {
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+              <Badge className="mb-4 bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300 border-orange-200 dark:border-orange-800">
                 Our Team
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -275,7 +276,7 @@ export default function AboutPage() {
                   </div>
                   <CardContent className="p-6">
                     <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
-                    <Badge variant="outline" className="mb-3">{member.role}</Badge>
+                    <Badge className="mb-3 bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300">{member.role}</Badge>
                     <p className="text-muted-foreground text-sm leading-relaxed">
                       {member.description}
                     </p>
@@ -290,7 +291,7 @@ export default function AboutPage() {
         <section className="py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
-              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+              <Badge className="mb-4 bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300 border-orange-200 dark:border-orange-800">
                 Why Choose Us
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -300,8 +301,8 @@ export default function AboutPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card className="p-6 text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="h-8 w-8 text-green-600" />
+                <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="h-8 w-8 brand-orange" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Verified Listings</h3>
                 <p className="text-muted-foreground">
@@ -310,8 +311,8 @@ export default function AboutPage() {
               </Card>
               
               <Card className="p-6 text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Shield className="h-8 w-8 text-blue-600" />
+                <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-8 w-8 brand-orange" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Secure Transactions</h3>
                 <p className="text-muted-foreground">
@@ -320,8 +321,8 @@ export default function AboutPage() {
               </Card>
               
               <Card className="p-6 text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Star className="h-8 w-8 text-purple-600" />
+                <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Star className="h-8 w-8 brand-orange" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">Expert Support</h3>
                 <p className="text-muted-foreground">
@@ -337,7 +338,7 @@ export default function AboutPage() {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-16">
-                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+                <Badge className="mb-4 bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300 border-orange-200 dark:border-orange-800">
                   Get in Touch
                 </Badge>
                 <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -350,8 +351,8 @@ export default function AboutPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <Card className="p-6 text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <MapPin className="h-6 w-6 text-primary" />
+                  <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <MapPin className="h-6 w-6 brand-orange" />
                   </div>
                   <h3 className="font-semibold mb-2">Visit Us</h3>
                   <p className="text-muted-foreground text-sm">
@@ -362,8 +363,8 @@ export default function AboutPage() {
                 </Card>
                 
                 <Card className="p-6 text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Phone className="h-6 w-6 text-primary" />
+                  <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Phone className="h-6 w-6 brand-orange" />
                   </div>
                   <h3 className="font-semibold mb-2">Call Us</h3>
                   <p className="text-muted-foreground text-sm">
@@ -374,8 +375,8 @@ export default function AboutPage() {
                 </Card>
                 
                 <Card className="p-6 text-center">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Mail className="h-6 w-6 text-primary" />
+                  <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Mail className="h-6 w-6 brand-orange" />
                   </div>
                   <h3 className="font-semibold mb-2">Email Us</h3>
                   <p className="text-muted-foreground text-sm">
@@ -387,7 +388,7 @@ export default function AboutPage() {
               </div>
               
               <div className="text-center mt-12">
-                <Button size="lg" asChild>
+                <Button size="lg" className="bg-brand-orange hover-brand-orange button-height" asChild>
                   <Link href="/listings">
                     Start Browsing Bikes
                   </Link>
@@ -397,6 +398,8 @@ export default function AboutPage() {
           </div>
         </section>
       </main>
+
+      <Footer />
     </div>
   )
 }
